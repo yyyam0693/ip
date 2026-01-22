@@ -11,10 +11,15 @@ public class BotWithAPlan {
 
         Task[] tasks = new Task[MAX_TASKS];
         int taskCount = 0;
+
         printGreeting();
 
         while (true) {
             String input = sc.nextLine();
+
+            if (input.trim().isEmpty()) {
+                continue;
+            }
 
             if (input.equals("bye")) {
                 printLine();
@@ -30,6 +35,14 @@ public class BotWithAPlan {
                     System.out.println(" " + (i + 1) + ". " + tasks[i]);
                 }
                 printLine();
+                continue;
+            }
+
+            if (input.equals("mark")) {
+                continue;
+            }
+
+            if (input.equals("unmark")) {
                 continue;
             }
 
@@ -59,14 +72,88 @@ public class BotWithAPlan {
                 continue;
             }
 
-            // add task
-            tasks[taskCount] = new Task(input);
-            taskCount++;
+            if (input.startsWith("todo")) {
+                String desc = input.length() > 5 ? input.substring("todo ".length()).trim() : "";
+                if (desc.isEmpty()) {
+                    continue;
+                }
+                tasks[taskCount] = new Todo(desc);
+                taskCount++;
+                printAdded(tasks[taskCount - 1], taskCount);
+                continue;
+            }
 
-            printLine();
-            System.out.println("added: " + input);
-            printLine();
+            if (input.startsWith("deadline")) {
+                Task d = parseDeadline(input);
+                if (d != null) {
+                    tasks[taskCount] = d;
+                    taskCount++;
+                    printAdded(tasks[taskCount - 1], taskCount);
+                }
+                continue;
+            }
+
+            if (input.startsWith("event")) {
+                Task e = parseEvent(input);
+                if (e != null) {
+                    tasks[taskCount] = e;
+                    taskCount++;
+                    printAdded(tasks[taskCount - 1], taskCount);
+                }
+                continue;
+            }
+
+            // add task
+            tasks[taskCount] = new Todo(input);
+            taskCount++;
+            printAdded(tasks[taskCount - 1], taskCount);
+
         }
+    }
+
+    private static void printAdded(Task task, int count) {
+        printLine();
+        System.out.println(" Got the plan. I've added this task:");
+        System.out.println(" " + task);
+        System.out.println(" Now you have " + count + " tasks in the list.");
+        printLine();
+    }
+
+    private static Task parseDeadline(String input) {
+        // "deadline <desc> /by <by>"
+        String rest = input.substring("deadline".length()).trim();
+        if (rest.isEmpty()) {
+            return null;
+        }
+        int byPos = rest.indexOf(" /by ");
+        if (byPos == -1) {
+            return null;
+        }
+        String desc = rest.substring(0, byPos).trim();
+        String by = rest.substring(byPos + " /by ".length()).trim();
+        if (desc.isEmpty() || by.isEmpty()) return null;
+
+        return new Deadline(desc, by);
+    }
+
+    private static Task parseEvent(String input) {
+        // "event <desc> /from <from> /to <to>"
+        String rest = input.substring("event".length()).trim();
+        if (rest.isEmpty()) {
+            return null;
+        }
+
+        int fromPos = rest.indexOf(" /from ");
+        int toPos = rest.indexOf(" /to ");
+        if (fromPos == -1 || toPos == -1 || toPos < fromPos) {
+            return null;
+        }
+        String desc = rest.substring(0, fromPos).trim();
+        String from = rest.substring(fromPos + " /from ".length(), toPos).trim();
+        String to = rest.substring(toPos + " /to ".length()).trim();
+        if (desc.isEmpty() || from.isEmpty() || to.isEmpty()) return null;
+
+        return new Event(desc, from, to);
     }
 
     private static int parseIndex(String input, String prefix) {
