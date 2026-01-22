@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class BotWithAPlan {
 
@@ -9,9 +10,7 @@ public class BotWithAPlan {
 
         Scanner sc = new Scanner(System.in);
 
-        Task[] tasks = new Task[MAX_TASKS];
-        int taskCount = 0;
-
+        ArrayList<Task> tasks = new ArrayList<>();
         printGreeting();
 
         while (true) {
@@ -32,8 +31,8 @@ public class BotWithAPlan {
                 if (input.equals("list")) {
                     printLine();
                     System.out.println(" I have a plan. Here are the tasks in your list:");
-                    for (int i = 0; i < taskCount; i++) {
-                        System.out.println(" " + (i + 1) + ". " + tasks[i]);
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println(" " + (i + 1) + ". " + tasks.get(i));
                     }
                     printLine();
                     continue;
@@ -49,8 +48,8 @@ public class BotWithAPlan {
 
                 if (input.startsWith("mark ")) {
                     int index = parseIndex(input, "mark ");
-                    if (index >= 1 && index <= taskCount) {
-                        Task t = tasks[index - 1];
+                    if (index >= 1 && index <= tasks.size()) {
+                        Task t = tasks.get(index - 1);
                         t.markAsDone();
                         printLine();
                         System.out.println(" OK, the plan is to mark this task as done, and ive gone ahead with the plan:");
@@ -62,8 +61,8 @@ public class BotWithAPlan {
 
                 if (input.startsWith("unmark ")) {
                     int index = parseIndex(input, "unmark ");
-                    if (index >= 1 && index <= taskCount) {
-                        Task t = tasks[index - 1];
+                    if (index >= 1 && index <= tasks.size()) {
+                        Task t = tasks.get(index - 1);
                         t.markAsNotDone();
                         printLine();
                         System.out.println(" OK, the plan is to mark this task as not done, and ive gone ahead with the plan:");
@@ -75,27 +74,41 @@ public class BotWithAPlan {
 
                 if (input.startsWith("todo")) {
                     Task t = parseTodo(input);
-                    tasks[taskCount] = t;
-                    taskCount++;
-                    printAdded(tasks[taskCount - 1], taskCount);
+                    tasks.add(t);
+                    printAdded(t, tasks.size());
                     continue;
                 }
 
                 if (input.startsWith("deadline")) {
                     Task d = parseDeadlineOrThrow(input);
-                    tasks[taskCount] = d;
-                    taskCount++;
-                    printAdded(tasks[taskCount - 1], taskCount);
+                    tasks.add(d);
+                    printAdded(d, tasks.size());
                     continue;
                 }
 
                 if (input.startsWith("event")) {
                     Task e = parseEventOrThrow(input);
-                    tasks[taskCount] = e;
-                    taskCount++;
-                    printAdded(tasks[taskCount - 1], taskCount);
+                    tasks.add(e);
+                    printAdded(e, tasks.size());
                     continue;
                 }
+
+                if (input.equals("delete") || input.startsWith("delete ")) {
+                    int idx = parseIndex(input, "delete ");
+                    if (idx < 1 || idx > tasks.size()) {
+                        throw new BotException("delete needs a valid task number.");
+                    }
+
+                    Task removed = tasks.remove(idx - 1);
+
+                    printLine();
+                    System.out.println(" Noted. I've removed this task:");
+                    System.out.println(" " + removed);
+                    System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
+                    printLine();
+                    continue;
+                }
+
 
                 //unknown command
                 throw new BotException("MANNNNN i dont get the plan.... Try: todo/deadline/event/list/mark/unmark/bye");
