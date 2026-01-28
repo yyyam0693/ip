@@ -1,4 +1,4 @@
-# BotWithAPlan User Guide
+# plan.BotWithAPlan User Guide
 
 // Update the title above to match the actual product name
 

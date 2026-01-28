@@ -1,16 +1,27 @@
+package plan;
+
 import java.util.Scanner;
 import java.util.ArrayList;
+import plan.storage.Storage;
 
 public class BotWithAPlan {
 
     private static final int MAX_TASKS = 100;
     private static final String LINE = "____________________________________________";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         Scanner sc = new Scanner(System.in);
 
-        ArrayList<Task> tasks = new ArrayList<>();
+        Storage storage = new Storage("data/duke.txt");
+
+        ArrayList<Task> tasks;
+        try {
+            tasks = storage.load();   // load saved tasks
+        } catch (Exception e) {
+            tasks = new ArrayList<>(); // start fresh if missing/corrupt
+        }
+
         printGreeting();
 
         while (true) {
@@ -51,6 +62,7 @@ public class BotWithAPlan {
                     if (index >= 1 && index <= tasks.size()) {
                         Task t = tasks.get(index - 1);
                         t.markAsDone();
+                        storage.save(tasks);
                         printLine();
                         System.out.println(" OK, the plan is to mark this task as done, and ive gone ahead with the plan:");
                         System.out.println(" " + t);
@@ -64,6 +76,7 @@ public class BotWithAPlan {
                     if (index >= 1 && index <= tasks.size()) {
                         Task t = tasks.get(index - 1);
                         t.markAsNotDone();
+                        storage.save(tasks);
                         printLine();
                         System.out.println(" OK, the plan is to mark this task as not done, and ive gone ahead with the plan:");
                         System.out.println(" " + t);
@@ -75,6 +88,7 @@ public class BotWithAPlan {
                 if (input.startsWith("todo")) {
                     Task t = parseTodo(input);
                     tasks.add(t);
+                    storage.save(tasks);
                     printAdded(t, tasks.size());
                     continue;
                 }
@@ -82,6 +96,7 @@ public class BotWithAPlan {
                 if (input.startsWith("deadline")) {
                     Task d = parseDeadlineOrThrow(input);
                     tasks.add(d);
+                    storage.save(tasks);
                     printAdded(d, tasks.size());
                     continue;
                 }
@@ -89,6 +104,7 @@ public class BotWithAPlan {
                 if (input.startsWith("event")) {
                     Task e = parseEventOrThrow(input);
                     tasks.add(e);
+                    storage.save(tasks);
                     printAdded(e, tasks.size());
                     continue;
                 }
@@ -100,6 +116,7 @@ public class BotWithAPlan {
                     }
 
                     Task removed = tasks.remove(idx - 1);
+                    storage.save(tasks);
 
                     printLine();
                     System.out.println(" Noted. I've removed this task:");
@@ -143,11 +160,11 @@ public class BotWithAPlan {
         // "deadline <desc> /by <by>"
         String rest = input.substring("deadline".length()).trim();
         if (rest.isEmpty()) {
-            throw new BotException("where are the details??? wake up. Deadline needs a description and /by <time>.");
+            throw new BotException("where are the details??? wake up. Plan.Deadline needs a description and /by <time>.");
         }
         int byPos = rest.indexOf(" /by ");
         if (byPos == -1) {
-            throw new BotException("do better. Deadline must be: deadline <task> /by <time>.");
+            throw new BotException("do better. Plan.Deadline must be: deadline <task> /by <time>.");
         }
         String desc = rest.substring(0, byPos).trim();
         String by = rest.substring(byPos + " /by ".length()).trim();
@@ -165,13 +182,13 @@ public class BotWithAPlan {
         // "event <desc> /from <from> /to <to>"
         String rest = input.substring("event".length()).trim();
         if (rest.isEmpty()) {
-            throw new BotException("where are the details??? wake up. Event must be: event <task> /from <start> /to <end>.");
+            throw new BotException("where are the details??? wake up. Plan.Event must be: event <task> /from <start> /to <end>.");
         }
 
         int fromPos = rest.indexOf(" /from ");
         int toPos = rest.indexOf(" /to ");
         if (fromPos == -1 || toPos == -1 || toPos < fromPos) {
-            throw new BotException("i'm disappointed in you. Event must be: event <task> /from <start> /to <end>.");
+            throw new BotException("i'm disappointed in you. Plan.Event must be: event <task> /from <start> /to <end>.");
         }
         String desc = rest.substring(0, fromPos).trim();
         String from = rest.substring(fromPos + " /from ".length(), toPos).trim();
