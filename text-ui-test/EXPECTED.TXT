@@ -1,5 +1,5 @@
 ____________________________________________
- Hello! I'm Bot-With-A-Plan, a bot with a plan.
+ Hello! I'm Bot-With-A-plan, a bot with a plan.
  I have a plan... (that isn't planned yet). What can I do for you?
  ____        _   
 | __ )  ___ | |_    
@@ -38,7 +38,7 @@ ____________________________________________
  dude.. you seriously telling me, the bot with a plan, about your nonexistent plan. try harder.
 ____________________________________________
 ____________________________________________
- do better. Deadline must be: deadline <task> /by <time>.
+ do better. plan.Deadline must be: deadline <task> /by <time>.
 ____________________________________________
 ____________________________________________
  MANNNNN i dont get the plan.... Try: todo/deadline/event/list/mark/unmark/bye
