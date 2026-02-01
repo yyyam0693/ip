@@ -160,11 +160,12 @@ public class BotWithAPlan {
         // "deadline <desc> /by <by>"
         String rest = input.substring("deadline".length()).trim();
         if (rest.isEmpty()) {
-            throw new BotException("where are the details??? wake up. Plan.Deadline needs a description and /by <time>.");
+            throw new BotException("where are the details??? wake up. " +
+                    "Deadline needs a description and /by <yyyy-mm-dd>.");
         }
         int byPos = rest.indexOf(" /by ");
         if (byPos == -1) {
-            throw new BotException("do better. Plan.Deadline must be: deadline <task> /by <time>.");
+            throw new BotException("do better. Plan. Deadline must be: deadline <task> /by <yyyy-mm-dd>.");
         }
         String desc = rest.substring(0, byPos).trim();
         String by = rest.substring(byPos + " /by ".length()).trim();
