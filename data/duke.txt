@@ -1,1 +1,4 @@
-D | 0 | hello | 2000-12-02
+D | 1 | hello | 2000-12-02
+T | 1 | heallo
+D | 0 | eesh | 2330-12-12
+E | 0 | hello | myself | myself
