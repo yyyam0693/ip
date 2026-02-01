@@ -1,5 +1,7 @@
 package plan;
 
+import java.time.LocalDate;
+
 public abstract class Task {
     protected String description;
     protected boolean isDone;
@@ -33,7 +35,7 @@ public abstract class Task {
             case "T":
                 return new Todo(desc, isDone);
             case "D":
-                return new Deadline(desc, parts[3], isDone);
+                return new Deadline(desc, LocalDate.parse(parts[3]), isDone);
             case "E":
                 return new Event(desc, parts[3], parts[4], isDone);
             default:
