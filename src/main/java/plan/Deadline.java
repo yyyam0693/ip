@@ -3,6 +3,9 @@ package plan;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents a task that must be completed by a specific date.
+ */
 public class Deadline extends Task {
 
     private final LocalDate by;
@@ -11,11 +14,24 @@ public class Deadline extends Task {
     private static final DateTimeFormatter OUTPUT =
             DateTimeFormatter.ofPattern("MMM d yyyy");
 
+    /**
+     * Creates a Deadline task.
+     *
+     * @param description Description of the task.
+     * @param by Due date in yyyy-mm-dd format.
+     */
     public Deadline(String desc, String by) {
         super(desc);
         this.by = LocalDate.parse(by, INPUT);
     }
 
+    /**
+     * Creates a Deadline task with a specified completion status.
+     *
+     * @param description Description of the task.
+     * @param by Due date.
+     * @param isDone Whether the task is completed.
+     */
     public Deadline(String desc, LocalDate by, boolean isDone) {
         super(desc);
         this.by = by;

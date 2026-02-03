@@ -4,6 +4,10 @@ import java.util.Scanner;
 
 import plan.Task;
 
+/**
+ * Handles all interactions with the user.
+ * Responsible for displaying messages and reading input.
+ */
 public class Ui {
     private static final String LINE = "____________________________________________";
     private final Scanner scanner = new Scanner(System.in);
