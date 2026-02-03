@@ -15,6 +15,7 @@ import plan.command.ExitCommand;
 import plan.command.ListCommand;
 import plan.command.MarkCommand;
 import plan.command.UnmarkCommand;
+import plan.command.FindCommand;
 
 public class Parser {
 
@@ -65,6 +66,11 @@ public class Parser {
         if (trimmed.equals("delete") || trimmed.startsWith("delete ")) {
             int idx = parseIndex(trimmed, "delete ");
             return new DeleteCommand(idx);
+        }
+
+        if (input.startsWith("find")) {
+            String keyword = input.length() > 4 ? input.substring(4).trim() : "";
+            return new FindCommand(keyword);
         }
 
         throw new BotException("MANNNNN i dont get the plan.... Try: todo/deadline/event/list/mark/unmark/bye");
