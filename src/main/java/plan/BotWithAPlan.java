@@ -64,6 +64,13 @@ public class BotWithAPlan {
     }
 
     /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "Bot-with-a-plan heard: " + input;
+    }
+
+    /**
      * Program entry point.
      *
      * @param args Command-line arguments (not used).
