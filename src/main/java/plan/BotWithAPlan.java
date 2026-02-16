@@ -76,15 +76,18 @@ public class BotWithAPlan {
         try {
             Command c = Parser.parse(input);
             c.execute(tasks, ui, storage);
-            if (c.isExit()) {
-                ui.showBye();
-            }
         } catch (BotException e) {
             ui.showError(e.getMessage());
         } catch (Exception e) {
             ui.showError("something went wrong... but i still have a plan.");
         }
 
+        return ui.getOutput();
+    }
+
+    public String getGreeting() {
+        ui.clearOutput();
+        ui.showGreeting();
         return ui.getOutput();
     }
 
