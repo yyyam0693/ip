@@ -9,8 +9,30 @@ import plan.Task;
  * Responsible for displaying messages and reading input.
  */
 public class Ui {
+
     private static final String LINE = "____________________________________________";
+
     private final Scanner scanner = new Scanner(System.in);
+
+    // Stores output for GUI usage
+    private final StringBuilder output = new StringBuilder();
+
+    /* ===================== Utility Methods ===================== */
+
+    public void clearOutput() {
+        output.setLength(0);
+    }
+
+    public String getOutput() {
+        return output.toString();
+    }
+
+    private void appendLine(String message) {
+        System.out.println(message);      // still prints for CLI
+        output.append(message).append(System.lineSeparator());
+    }
+
+    /* ===================== User Interaction ===================== */
 
     public void showGreeting() {
         String logo = " ____        _   \n"
@@ -20,9 +42,9 @@ public class Ui {
                 + "|____/ \\___/ \\__|  \n";
 
         showLine();
-        System.out.println(" Hello! I'm Bot-With-A-Plan, a bot with a plan.");
-        System.out.println(" I have a plan... (that isn't planned yet). What can I do for you?");
-        System.out.println(logo);
+        appendLine(" Hello! I'm Bot-With-A-Plan, a bot with a plan.");
+        appendLine(" I have a plan... (that isn't planned yet). What can I do for you?");
+        appendLine(logo);
         showLine();
     }
 
@@ -31,28 +53,28 @@ public class Ui {
     }
 
     public void showLine() {
-        System.out.println(LINE);
+        appendLine(LINE);
     }
 
     public void showError(String msg) {
         showLine();
-        System.out.println(" " + msg);
+        appendLine(" " + msg);
         showLine();
     }
 
     public void showBye() {
         showLine();
-        System.out.println(" Bye. Hope to see you again soon!");
+        appendLine(" Bye. Hope to see you again soon!");
         showLine();
     }
 
     public void showListHeader() {
         showLine();
-        System.out.println(" I have a plan. Here are the tasks in your list:");
+        appendLine(" I have a plan. Here are the tasks in your list:");
     }
 
     public void showTaskInList(int displayIndex, Task task) {
-        System.out.println(" " + displayIndex + ". " + task);
+        appendLine(" " + displayIndex + ". " + task);
     }
 
     public void showListFooter() {
@@ -61,36 +83,36 @@ public class Ui {
 
     public void showAdded(Task task, int count) {
         showLine();
-        System.out.println(" Got the plan. I've added this task:");
-        System.out.println(" " + task);
-        System.out.println(" Now you have " + count + " tasks in the list.");
+        appendLine(" Got the plan. I've added this task:");
+        appendLine(" " + task);
+        appendLine(" Now you have " + count + " tasks in the list.");
         showLine();
     }
 
     public void showMarked(Task task, boolean isDone) {
         showLine();
         if (isDone) {
-            System.out.println(" OK, the plan is to mark this task as done, and ive gone ahead with the plan:");
+            appendLine(" OK, the plan is to mark this task as done, and ive gone ahead with the plan:");
         } else {
-            System.out.println(" OK, the plan is to mark this task as not done, and ive gone ahead with the plan:");
+            appendLine(" OK, the plan is to mark this task as not done, and ive gone ahead with the plan:");
         }
-        System.out.println(" " + task);
+        appendLine(" " + task);
         showLine();
     }
 
     public void showDeleted(Task removed, int count) {
         showLine();
-        System.out.println(" Noted. I've removed this task:");
-        System.out.println(" " + removed);
-        System.out.println(" Now you have " + count + " tasks in the list.");
+        appendLine(" Noted. I've removed this task:");
+        appendLine(" " + removed);
+        appendLine(" Now you have " + count + " tasks in the list.");
         showLine();
     }
 
+    // AI-assisted: Duplicate detection logic was designed with guidance from ChatGPT to improve code robustness.
     public void showDuplicate(Task task) {
         showLine();
-        System.out.println(" Nope. This task already exists:");
-        System.out.println(" " + task);
+        appendLine(" Nope. This task already exists:");
+        appendLine(" " + task);
         showLine();
     }
-
 }

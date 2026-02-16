@@ -67,7 +67,25 @@ public class BotWithAPlan {
      * Generates a response for the user's chat message.
      */
     public String getResponse(String input) {
-        return "Bot-with-a-plan heard: " + input;
+        ui.clearOutput();
+
+        if (input == null || input.trim().isEmpty()) {
+            return "";
+        }
+
+        try {
+            Command c = Parser.parse(input);
+            c.execute(tasks, ui, storage);
+            if (c.isExit()) {
+                ui.showBye();
+            }
+        } catch (BotException e) {
+            ui.showError(e.getMessage());
+        } catch (Exception e) {
+            ui.showError("something went wrong... but i still have a plan.");
+        }
+
+        return ui.getOutput();
     }
 
     /**
