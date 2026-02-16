@@ -1,6 +1,8 @@
 package plan;
 
 import java.time.LocalDate;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Represents a generic task with a description and completion status.
@@ -76,6 +78,28 @@ public abstract class Task {
             default:
                 throw new IllegalArgumentException("Unknown task type");
         }
+    }
+
+    private String getDuplicateKey() {
+        String normalizedDesc = description == null ? "" : description.trim().toLowerCase(Locale.ROOT);
+        return getClass().getName() + "|" + normalizedDesc;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (other == null || getClass() != other.getClass()) {
+            return false;
+        }
+        Task otherTask = (Task) other;
+        return Objects.equals(this.getDuplicateKey(), otherTask.getDuplicateKey());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDuplicateKey());
     }
 
 

@@ -15,6 +15,11 @@ public class AddDeadlineCommand extends Command {
 
     @Override
     public void execute(ArrayList<Task> tasks, Ui ui, Storage storage) throws Exception {
+        if (tasks.contains(task)) {
+            ui.showDuplicate(task);
+            return;
+        }
+
         tasks.add(task);
         storage.save(tasks);
         ui.showAdded(task, tasks.size());

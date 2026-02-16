@@ -85,4 +85,12 @@ public class Ui {
         System.out.println(" Now you have " + count + " tasks in the list.");
         showLine();
     }
+
+    public void showDuplicate(Task task) {
+        showLine();
+        System.out.println(" Nope. This task already exists:");
+        System.out.println(" " + task);
+        showLine();
+    }
+
 }
