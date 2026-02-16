@@ -39,9 +39,8 @@ public class Storage {
         List<String> lines = Files.readAllLines(filePath);
 
         for (String line : lines) {
-            if (line == null) {
-                continue;
-            }
+            assert line != null : "Storage.load: readAllLines should not contain null lines";
+
             String trimmed = line.trim();
             if (trimmed.isEmpty()) {
                 continue;
