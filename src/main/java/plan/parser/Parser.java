@@ -1,9 +1,6 @@
 package plan.parser;
 
 import plan.BotException;
-import plan.Deadline;
-import plan.Event;
-import plan.Todo;
 import plan.Task;
 
 import plan.command.AddDeadlineCommand;
@@ -19,10 +16,12 @@ import plan.command.FindCommand;
 
 public class Parser {
 
+    public static final String MANNNNN_I_DONT_GET_THE_PLAN_TRY_TODO_DEADLINE_EVENT_LIST_MARK_UNMARK_BYE = "MANNNNN i dont get the plan.... Try: todo/deadline/event/list/mark/unmark/bye";
+
     public static Command parse(String input) throws BotException {
         String trimmed = input.trim();
         if (trimmed.isEmpty()) {
-            throw new BotException("MANNNNN i dont get the plan.... Try: todo/deadline/event/list/mark/unmark/bye");
+            throw new BotException(MANNNNN_I_DONT_GET_THE_PLAN_TRY_TODO_DEADLINE_EVENT_LIST_MARK_UNMARK_BYE);
         }
 
         if (trimmed.equals("bye")) {
