@@ -2,6 +2,9 @@ package plan.parser;
 
 import plan.BotException;
 import plan.Task;
+import plan.Todo;
+import plan.Deadline;
+import plan.Event;
 
 import plan.command.AddDeadlineCommand;
 import plan.command.AddEventCommand;
