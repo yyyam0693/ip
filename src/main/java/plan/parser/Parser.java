@@ -21,6 +21,9 @@ public class Parser {
 
     public static Command parse(String input) throws BotException {
         String trimmed = input.trim();
+
+        assert input != null : "Parser.parse: input should not be null";
+
         if (trimmed.isEmpty()) {
             throw new BotException("MANNNNN i dont get the plan.... Try: todo/deadline/event/list/mark/unmark/bye");
         }
@@ -68,8 +71,8 @@ public class Parser {
             return new DeleteCommand(idx);
         }
 
-        if (input.startsWith("find")) {
-            String keyword = input.length() > 4 ? input.substring(4).trim() : "";
+        if (trimmed.startsWith("find")) {
+            String keyword = trimmed.length() > 4 ? trimmed.substring(4).trim() : "";
             return new FindCommand(keyword);
         }
 
@@ -77,6 +80,10 @@ public class Parser {
     }
 
     private static Task parseTodo(String input) throws BotException {
+
+        assert input != null : "parseTodo: input should not be null";
+        assert input.startsWith("todo") : "parseTodo called with non-todo input: " + input;
+
         String desc = input.length() > 5 ? input.substring("todo ".length()).trim() : "";
         if (desc.isEmpty()) {
             throw new BotException("dude.. you seriously telling me, the bot with a plan, about your nonexistent plan. try harder.");
@@ -85,11 +92,17 @@ public class Parser {
     }
 
     private static Task parseDeadlineOrThrow(String input) throws BotException {
+
+        assert input != null : "parseDeadlineOrThrow: input should not be null";
+        assert input.startsWith("deadline") : "parseDeadlineOrThrow called with non-deadline input: " + input;
+
         String rest = input.substring("deadline".length()).trim();
         if (rest.isEmpty()) {
             throw new BotException("where are the details??? wake up. Deadline needs a description and /by <yyyy-mm-dd>.");
         }
         int byPos = rest.indexOf(" /by ");
+        assert byPos >= 0 : "deadline must contain /by segment";
+
         if (byPos == -1) {
             throw new BotException("do better. Plan. Deadline must be: deadline <task> /by <yyyy-mm-dd>.");
         }
@@ -105,6 +118,10 @@ public class Parser {
     }
 
     private static Task parseEventOrThrow(String input) throws BotException {
+
+        assert input != null : "parseEventOrThrow: input should not be null";
+        assert input.startsWith("event") : "parseEventOrThrow called with non-event input: " + input;
+
         String rest = input.substring("event".length()).trim();
         if (rest.isEmpty()) {
             throw new BotException("where are the details??? wake up. Plan.Event must be: event <task> /from <start> /to <end>.");
@@ -112,6 +129,8 @@ public class Parser {
 
         int fromPos = rest.indexOf(" /from ");
         int toPos = rest.indexOf(" /to ");
+        assert (fromPos == -1 || toPos == -1) || toPos > fromPos : "event /to should be after /from";
+
         if (fromPos == -1 || toPos == -1 || toPos < fromPos) {
             throw new BotException("i'm disappointed in you. Plan.Event must be: event <task> /from <start> /to <end>.");
         }
@@ -127,8 +146,15 @@ public class Parser {
     }
 
     private static int parseIndex(String input, String prefix) throws BotException {
+
+        assert input != null : "parseIndex: input should not be null";
+        assert prefix != null : "parseIndex: prefix should not be null";
+        assert input.startsWith(prefix) : "parseIndex called with wrong prefix. input=" + input + ", prefix=" + prefix;
+
         try {
             int idx = Integer.parseInt(input.substring(prefix.length()).trim());
+            assert idx > 0 : "task index should be 1-based and > 0, got: " + idx;
+
             return idx;
         } catch (NumberFormatException e) {
             throw new BotException(prefix.trim() + " needs a valid task number.");

@@ -56,8 +56,13 @@ public abstract class Task {
      * @throws IllegalArgumentException If the task type is unknown.
      */
     public static Task fromFileString(String line) {
+        assert line != null : "fromFileString: line should not be null";
         String[] parts = line.split(" \\| ");
+        assert parts.length >= 3 : "fromFileString: invalid format, parts=" + parts.length;
+
         String type = parts[0];
+        assert type.equals("T") || type.equals("D") || type.equals("E") : "fromFileString: unknown type " + type;
+
         boolean isDone = parts[1].equals("1");
         String desc = parts[2];
 
