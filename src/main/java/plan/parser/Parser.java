@@ -94,34 +94,48 @@ public class Parser {
     }
 
     private static Task parseDeadlineOrThrow(String input) throws BotException {
+
         assert input != null : "parseDeadlineOrThrow: input should not be null";
-        assert input.startsWith("deadline")
-                : "parseDeadlineOrThrow called with non-deadline input: " + input;
+        assert input.startsWith("deadline") :
+                "parseDeadlineOrThrow called with non-deadline input: " + input;
 
         String rest = input.substring("deadline".length()).trim();
+
         if (rest.isEmpty()) {
-            throw new BotException("where are the details??? wake up. Deadline needs a description and /by <yyyy-mm-dd>.");
+            throw new BotException(
+                    "Deadline must be: deadline <task> /by <yyyy-mm-dd>"
+            );
         }
 
-        int byPos = rest.indexOf(" /by ");
+        int byPos = rest.indexOf("/by");
+
         if (byPos == -1) {
-            throw new BotException("do better. Plan. Deadline must be: deadline <task> /by <yyyy-mm-dd>.");
+            throw new BotException(
+                    "Deadline must be: deadline <task> /by <yyyy-mm-dd>"
+            );
         }
 
         String desc = rest.substring(0, byPos).trim();
-        String by = rest.substring(byPos + " /by ".length()).trim();
+        String by = rest.substring(byPos + 3).trim(); // 3 = "/by".length()
 
         if (desc.isEmpty()) {
-            throw new BotException("where are the details??? wake up");
+            throw new BotException(
+                    "Deadline description cannot be empty."
+            );
         }
+
         if (by.isEmpty()) {
-            throw new BotException("do you expect me to know when the deadline is... as i said, i have a plan, not the plan.");
+            throw new BotException(
+                    "Deadline date cannot be empty. Use format: yyyy-mm-dd"
+            );
         }
 
         try {
             return new Deadline(desc, by);
-        } catch (RuntimeException e) {
-            throw new BotException("Invalid date format. Use: deadline <task> /by <yyyy-mm-dd>");
+        } catch (Exception e) {
+            throw new BotException(
+                    "Invalid date format. Use: deadline <task> /by <yyyy-mm-dd>"
+            );
         }
     }
 
