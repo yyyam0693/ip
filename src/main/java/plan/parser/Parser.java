@@ -94,22 +94,23 @@ public class Parser {
     }
 
     private static Task parseDeadlineOrThrow(String input) throws BotException {
-
         assert input != null : "parseDeadlineOrThrow: input should not be null";
-        assert input.startsWith("deadline") : "parseDeadlineOrThrow called with non-deadline input: " + input;
+        assert input.startsWith("deadline")
+                : "parseDeadlineOrThrow called with non-deadline input: " + input;
 
         String rest = input.substring("deadline".length()).trim();
         if (rest.isEmpty()) {
             throw new BotException("where are the details??? wake up. Deadline needs a description and /by <yyyy-mm-dd>.");
         }
-        int byPos = rest.indexOf(" /by ");
-        assert byPos >= 0 : "deadline must contain /by segment";
 
+        int byPos = rest.indexOf(" /by ");
         if (byPos == -1) {
             throw new BotException("do better. Plan. Deadline must be: deadline <task> /by <yyyy-mm-dd>.");
         }
+
         String desc = rest.substring(0, byPos).trim();
         String by = rest.substring(byPos + " /by ".length()).trim();
+
         if (desc.isEmpty()) {
             throw new BotException("where are the details??? wake up");
         }
@@ -119,10 +120,8 @@ public class Parser {
 
         try {
             return new Deadline(desc, by);
-        } catch (Exception e) {
-            throw new BotException(
-                    "Invalid date format. Use: deadline <task> /by <yyyy-mm-dd>"
-            );
+        } catch (RuntimeException e) {
+            throw new BotException("Invalid date format. Use: deadline <task> /by <yyyy-mm-dd>");
         }
     }
 
