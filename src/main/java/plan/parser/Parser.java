@@ -140,57 +140,44 @@ public class Parser {
     }
 
     private static Task parseEventOrThrow(String input) throws BotException {
-
         assert input != null : "parseEventOrThrow: input should not be null";
-        assert input.startsWith("event") :
-                "parseEventOrThrow called with non-event input: " + input;
+        assert input.startsWith("event") : "parseEventOrThrow called with non-event input: " + input;
 
         String rest = input.substring("event".length()).trim();
-
         if (rest.isEmpty()) {
-            throw new BotException(
-                    "Event must be: event <task> /from <start> /to <end>."
-            );
+            throw new BotException("Event must be: event <task> /from <start> /to <end>.");
         }
 
-        int fromPos = rest.indexOf(" /from ");
-        int toPos = rest.indexOf(" /to ");
+        int fromPos = rest.indexOf("/from");
+        int toPos = rest.indexOf("/to");
 
         if (fromPos == -1) {
-            throw new BotException(
-                    "Missing /from. Format: event <task> /from <start> /to <end>."
-            );
+            throw new BotException("Missing /from. Format: event <task> /from <start> /to <end>.");
         }
-
         if (toPos == -1) {
-            throw new BotException(
-                    "Missing /to. Format: event <task> /from <start> /to <end>."
-            );
+            throw new BotException("Missing /to. Format: event <task> /from <start> /to <end>.");
         }
-
         if (toPos < fromPos) {
-            throw new BotException(
-                    "/to must come after /from. Format: event <task> /from <start> /to <end>."
-            );
+            throw new BotException("/to must come after /from. Format: event <task> /from <start> /to <end>.");
         }
 
         String desc = rest.substring(0, fromPos).trim();
-        String from = rest.substring(fromPos + " /from ".length(), toPos).trim();
-        String to = rest.substring(toPos + " /to ".length()).trim();
+
+        String afterFrom = rest.substring(fromPos + "/from".length()).trim();
+        String fromPart = rest.substring(fromPos + "/from".length(), toPos).trim();
+        String toPart = rest.substring(toPos + "/to".length()).trim();
 
         if (desc.isEmpty()) {
             throw new BotException("Event description cannot be empty.");
         }
-
-        if (from.isEmpty()) {
+        if (fromPart.isEmpty()) {
             throw new BotException("The /from part cannot be empty.");
         }
-
-        if (to.isEmpty()) {
+        if (toPart.isEmpty()) {
             throw new BotException("The /to part cannot be empty.");
         }
 
-        return new Event(desc, from, to);
+        return new Event(desc, fromPart, toPart);
     }
 
     private static int parseIndex(String input, String prefix) throws BotException {
