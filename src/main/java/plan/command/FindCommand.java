@@ -22,19 +22,18 @@ public class FindCommand extends Command {
 
         String key = keyword.trim().toLowerCase();
 
-        ui.showLine();
-        System.out.println(" Here are the matching tasks in your list:");
+        ui.showFindHeader();
 
         int shownIndex = 1;
         for (Task t : tasks) {
             if (t.getDescription().toLowerCase().contains(key)) {
-                System.out.println(" " + shownIndex + ". " + t);
+                ui.showTaskInList(shownIndex, t);
                 shownIndex++;
             }
         }
 
         if (shownIndex == 1) {
-            System.out.println(" (no matches)");
+            ui.showNoMatches();
         }
 
         ui.showLine();

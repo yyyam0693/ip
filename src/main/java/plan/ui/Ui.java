@@ -115,4 +115,14 @@ public class Ui {
         appendLine(" " + task);
         showLine();
     }
+
+    public void showFindHeader() {
+        showLine();
+        appendLine(" Here are the matching tasks in your list:");
+    }
+
+    public void showNoMatches() {
+        appendLine(" (no matches)");
+    }
+
 }
