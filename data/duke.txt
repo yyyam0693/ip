@@ -1,5 +1,0 @@
-T | 0 | 2103 quiz
-D | 1 | 2109 pset | 2026-02-20
-D | 0 | wallpaper | 2026-02-23
-T | 1 | say hello to prof
-D | 0 | write essay | 2026-03-01
