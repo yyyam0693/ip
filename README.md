@@ -1,4 +1,4 @@
-# plan.BotWithAPlan project template
+#BotWithAPlan project template
 
 This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are instructions on how to use it.
 
@@ -15,12 +15,14 @@ Prerequisites: JDK 17, update Intellij to the most recent version.
    In the same dialog, set the **Project language level** field to the `SDK default` option.
 1. After that, locate the `src/main/java/plan.BotWithAPlan.java` file, right-click it, and choose `Run plan.BotWithAPlan.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
    ```
-   Hello from
-    ____        _        
-   |  _ \ _   _| | _____ 
-   | | | | | | | |/ / _ \
-   | |_| | |_| |   <  __/
-   |____/ \__,_|_|\_\___|
+   Hello! I'm Bot-With-A-Plan, a bot with a plan.
+   I have a plan... (that isn't planned yet). What can I do for you?
+
+    ____        _   
+   | __ )  ___ | |_  
+   |  _ \ / _ \| __| 
+   | |_) | (_) | |_  
+   |____/ \___/ \__| 
    ```
 
 **Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
