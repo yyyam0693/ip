@@ -116,7 +116,14 @@ public class Parser {
         if (by.isEmpty()) {
             throw new BotException("do you expect me to know when the deadline is... as i said, i have a plan, not the plan.");
         }
-        return new Deadline(desc, by);
+
+        try {
+            return new Deadline(desc, by);
+        } catch (Exception e) {
+            throw new BotException(
+                    "Invalid date format. Use: deadline <task> /by <yyyy-mm-dd>"
+            );
+        }
     }
 
     private static Task parseEventOrThrow(String input) throws BotException {
