@@ -19,7 +19,7 @@ import plan.command.FindCommand;
 
 public class Parser {
 
-    public static final String MANNNNN_I_DONT_GET_THE_PLAN_TRY_TODO_DEADLINE_EVENT_LIST_MARK_UNMARK_BYE = "MANNNNN i dont get the plan.... Try: todo/deadline/event/list/mark/unmark/bye";
+    public static final String UNKNOWN_ERROR_MESSAGE = "MANNNNN i dont get the plan.... Try: todo/deadline/event/list/mark/unmark/bye";
 
     public static Command parse(String input) throws BotException {
         String trimmed = input.trim();
@@ -27,7 +27,7 @@ public class Parser {
         assert input != null : "Parser.parse: input should not be null";
 
         if (trimmed.isEmpty()) {
-            throw new BotException(MANNNNN_I_DONT_GET_THE_PLAN_TRY_TODO_DEADLINE_EVENT_LIST_MARK_UNMARK_BYE);
+            throw new BotException(UNKNOWN_ERROR_MESSAGE);
         }
 
         if (trimmed.equals("bye")) {
