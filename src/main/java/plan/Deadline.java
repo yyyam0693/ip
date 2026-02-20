@@ -17,7 +17,7 @@ public class Deadline extends Task {
     /**
      * Creates a Deadline task.
      *
-     * @param description Description of the task.
+     * @param desc Description of the task.
      * @param by Due date in yyyy-mm-dd format.
      */
     public Deadline(String desc, String by) {
@@ -28,7 +28,7 @@ public class Deadline extends Task {
     /**
      * Creates a Deadline task with a specified completion status.
      *
-     * @param description Description of the task.
+     * @param desc Description of the task.
      * @param by Due date.
      * @param isDone Whether the task is completed.
      */

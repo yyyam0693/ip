@@ -7,7 +7,7 @@ public class Event extends Task{
     /**
      * Creates an Event task.
      *
-     * @param description Description of the event.
+     * @param desc Description of the event.
      * @param from Start date/time.
      * @param to End date/time.
      */
@@ -20,13 +20,13 @@ public class Event extends Task{
     /**
      * Creates an Event task with a specified completion status.
      *
-     * @param description Description of the event.
+     * @param desc Description of the event.
      * @param from Start date/time.
      * @param to End date/time.
      * @param isDone Whether the task is completed.
      */
-    public Event(String description, String from, String to, boolean isDone) {
-        super(description);
+    public Event(String desc, String from, String to, boolean isDone) {
+        super(desc);
         this.from = from;
         this.to = to;
         this.isDone = isDone;
